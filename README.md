@@ -78,7 +78,7 @@ mvn exec:java -Dexec.mainClass="bo.edu.ucb.sis213.App"
 1. Hacer correr una instancia MySQL en docker
 
 ```
-docker run --name mysql-atmalf -e MYSQL_ROOT_PASSWORD=123456 -p 3306:3306 -d mysql:8
+docker run --name mysql-atmalf -e MYSQL_ROOT_PASSWORD=123456 -p 3307:3306 -d mysql:8
 ```
 
 _1.1 Inicicar una instancia ya creada
