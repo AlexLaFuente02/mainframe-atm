@@ -48,7 +48,7 @@ public class App {
             System.out.println("2. Realizar un depósito.");
             System.out.println("3. Realizar un retiro.");
             System.out.println("4. Cambiar PIN.");
-            System.out.println("5. Ver historial de transacciones.");
+            System.out.println("5. c.");
             System.out.println("6. Salir.");
             System.out.print("Seleccione una opción: ");
             int opcion = scanner.nextInt();

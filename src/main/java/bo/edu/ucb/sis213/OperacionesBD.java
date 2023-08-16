@@ -17,7 +17,7 @@ public class OperacionesBD {
         this.scanner = new Scanner(System.in);
     }
 
-    public void consultarSaldo() throws SQLException {
+    public String consultarSaldo() throws SQLException {
         String query = "SELECT nombre, saldo FROM usuarios WHERE id = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, usuarioId);
@@ -27,10 +27,14 @@ public class OperacionesBD {
                 double saldo = resultSet.getDouble("saldo");
                 System.out.println("Usuario: " + nombreUsuario);
                 System.out.println("Saldo actual: $" + saldo);
+                String answer = "Usuario: " + nombreUsuario + "\nSaldo actual: $" + saldo;
+                return answer;
             } else {
                 System.out.println("No se encontró el usuario.");
             }
         }
+        
+        return ":(";
     }
 
     public void realizarDeposito() throws SQLException {
@@ -96,7 +100,6 @@ public class OperacionesBD {
     }
 
     public void cambiarPIN() throws SQLException {
-        Scanner scanner = new Scanner(System.in);
         System.out.print("Ingrese su PIN actual: ");
         int pinIngresado = scanner.nextInt();
     
