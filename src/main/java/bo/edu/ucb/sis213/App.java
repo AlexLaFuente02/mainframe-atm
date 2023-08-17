@@ -1,8 +1,6 @@
 package bo.edu.ucb.sis213;
 
 import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
@@ -58,10 +56,10 @@ public class App {
                     operacionesBD.consultarSaldo();
                     break;
                 case 2:
-                    operacionesBD.realizarDeposito();
+                    //operacionesBD.realizarDeposito();
                     break;
                 case 3:
-                    operacionesBD.realizarRetiro();
+                    //operacionesBD.realizarRetiro();
                     break;
                 case 4:
                     operacionesBD.cambiarPIN();

@@ -39,22 +39,22 @@ public class InicioSesion {
 		
 		JLabel txtAlias = new JLabel("Ingresa tu alias:");
 		txtAlias.setForeground(Color.BLACK);
-		txtAlias.setBounds(109, 125, 155, 14);
+		txtAlias.setBounds(74, 124, 155, 14);
 		loginPanel.add(txtAlias);
 		
 		aliasField = new JTextField();
-		aliasField.setBounds(274, 119, 200, 20);
+		aliasField.setBounds(240, 119, 200, 20);
 		loginPanel.add(aliasField);
 		aliasField.setColumns(10);
 		
 		JLabel txtPin = new JLabel("Ingresa tu PIN:");
 		txtPin.setForeground(Color.BLACK);
-		txtPin.setBounds(109, 147, 112, 14);
+		txtPin.setBounds(74, 146, 112, 14);
 		loginPanel.add(txtPin);
 		
 		pinField = new JPasswordField();
 		pinField.setColumns(10);
-		pinField.setBounds(274, 145, 200, 20);
+		pinField.setBounds(240, 145, 200, 20);
 		loginPanel.add(pinField);
 		
 		JButton btnIniciarSesion = new JButton("Iniciar Sesión");
@@ -66,7 +66,7 @@ public class InicioSesion {
 				verificarPIN();
 			}
 		});
-		btnIniciarSesion.setBounds(304, 201, 105, 23);
+		btnIniciarSesion.setBounds(269, 200, 105, 23);
 		loginPanel.add(btnIniciarSesion);
 		
 		JButton btnCerrar = new JButton("Cerrar");
@@ -78,7 +78,7 @@ public class InicioSesion {
 		btnCerrar.setForeground(Color.WHITE);
 		btnCerrar.setFont(new Font("Tahoma", Font.BOLD, 10));
 		btnCerrar.setBackground(Color.BLACK);
-		btnCerrar.setBounds(147, 201, 89, 23);
+		btnCerrar.setBounds(112, 200, 89, 23);
 		loginPanel.add(btnCerrar);
 
         return loginPanel; 
@@ -87,9 +87,10 @@ public class InicioSesion {
 	private void verificarPIN() {
         if (intentos > 0) { // Verificar si quedan intentos
             int pinIngresado = Integer.parseInt(new String(pinField.getPassword())); // Obtener el PIN ingresado
-            try {
+            String aliasIngresado = aliasField.getText();
+			try {
                 Connection connection = DatabaseManager.getConnection();
-                int usuarioId = DatabaseManager.obtenerUsuarioIdPorPin(connection, pinIngresado);
+                int usuarioId = DatabaseManager.obtenerUsuarioIdPorPinYAlias(connection, aliasIngresado, pinIngresado);
                 if (usuarioId != -1) {
                     mostrarMenu(connection,usuarioId);
                 } 

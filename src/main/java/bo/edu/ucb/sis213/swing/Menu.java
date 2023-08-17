@@ -3,12 +3,9 @@ package bo.edu.ucb.sis213.swing;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import bo.edu.ucb.sis213.OperacionesBD;
-
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class Menu {
 
@@ -45,7 +42,7 @@ public class Menu {
                 mostrarSaldo(connection, usuarioId);
             }
         });
-        btnConsultarSaldo.setBounds(88, 92, 170, 23);
+        btnConsultarSaldo.setBounds(87, 107, 170, 23);
         menuPanel.add(btnConsultarSaldo);
 
         JButton btnRealizarDeposito = new JButton("Realizar Depósito");
@@ -54,10 +51,10 @@ public class Menu {
         btnRealizarDeposito.setBackground(Color.BLACK);
         btnRealizarDeposito.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para realizar depósito
+                mostrarDeposito(connection, usuarioId);
             }
         });
-        btnRealizarDeposito.setBounds(268, 92, 170, 23);
+        btnRealizarDeposito.setBounds(267, 107, 170, 23);
         menuPanel.add(btnRealizarDeposito);
 
         JButton btnRealizarRetiro = new JButton("Realizar Retiro");
@@ -66,10 +63,10 @@ public class Menu {
         btnRealizarRetiro.setBackground(Color.BLACK);
         btnRealizarRetiro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para realizar retiro
+                mostrarRetiro(connection, usuarioId);
             }
         });
-        btnRealizarRetiro.setBounds(88, 135, 170, 23);
+        btnRealizarRetiro.setBounds(87, 150, 170, 23);
         menuPanel.add(btnRealizarRetiro);
 
         JButton btnCambiarPIN = new JButton("Cambiar PIN");
@@ -81,7 +78,7 @@ public class Menu {
                 // Lógica para cambiar PIN
             }
         });
-        btnCambiarPIN.setBounds(268, 135, 170, 23);
+        btnCambiarPIN.setBounds(267, 150, 170, 23);
         menuPanel.add(btnCambiarPIN);
 
         JButton btnVerHistorial = new JButton("Historial de Transacciones");
@@ -93,7 +90,7 @@ public class Menu {
                 // Lógica para ver historial de transacciones
             }
         });
-        btnVerHistorial.setBounds(88, 181, 170, 23);
+        btnVerHistorial.setBounds(87, 196, 170, 23);
         menuPanel.add(btnVerHistorial);
 
         JButton btnSalir = new JButton("Salir");
@@ -105,7 +102,7 @@ public class Menu {
         btnSalir.setForeground(Color.WHITE);
         btnSalir.setFont(new Font("Tahoma", Font.BOLD, 10));
         btnSalir.setBackground(Color.BLACK);
-        btnSalir.setBounds(268, 181, 170, 23);
+        btnSalir.setBounds(267, 196, 170, 23);
         menuPanel.add(btnSalir);
 
         return menuPanel;
@@ -116,6 +113,22 @@ public class Menu {
         ConsultarSaldo saldo = new ConsultarSaldo(frame, connection,usuarioId);
         frame.getContentPane().removeAll();
         frame.getContentPane().add(saldo.panelSaldo());
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void mostrarDeposito(Connection connection, int usuarioId) {
+        RealizarDeposito deposito = new RealizarDeposito(frame, connection,usuarioId);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(deposito.panelRealizarDeposito());
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void mostrarRetiro(Connection connection, int usuarioId) {
+        RealizarRetiro retiro = new RealizarRetiro(frame, connection,usuarioId);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(retiro.panelRealizarRetiro());
         frame.revalidate();
         frame.repaint();
     }

@@ -37,13 +37,14 @@ public class OperacionesBD {
         return ":(";
     }
 
-    public void realizarDeposito() throws SQLException {
+    public String realizarDeposito(String mnt) throws SQLException {
         System.out.print("Ingrese la cantidad a depositar: $");
-        double cantidad = scanner.nextDouble();
+        //double cantidad = scanner.nextDouble();
+        double cantidad = Double.parseDouble(mnt);
 
         if (cantidad <= 0) {
             System.out.println("Cantidad no válida.");
-            return;
+            return "Cantidad no válida.";
         }
 
         String saldoQuery = "SELECT saldo FROM usuarios WHERE id = ?";
@@ -60,18 +61,21 @@ public class OperacionesBD {
                     updateStatement.setInt(2, usuarioId);
                     updateStatement.executeUpdate();
                     System.out.println("Depósito realizado con éxito. Su nuevo saldo es: $" + (saldoActual + cantidad));
+                    return "Depósito realizado con éxito. Su nuevo saldo es: $" + (saldoActual + cantidad);
                 }
             }
         }
+        return ":(";
     }
 
-    public void realizarRetiro() throws SQLException {
+    public String realizarRetiro(String monto) throws SQLException {
         System.out.print("Ingrese la cantidad a retirar: $");
-        double cantidad = scanner.nextDouble();
+        //double cantidad = scanner.nextDouble();
+        double cantidad = Double.parseDouble(monto);
 
         if (cantidad <= 0) {
             System.out.println("Cantidad no válida.");
-            return;
+            return "Cantidad no válida.";
         }
 
         String saldoQuery = "SELECT saldo FROM usuarios WHERE id = ?";
@@ -82,7 +86,7 @@ public class OperacionesBD {
                 double saldoActual = saldoResultSet.getDouble("saldo");
                 if (cantidad > saldoActual) {
                     System.out.println("Saldo insuficiente.");
-                    return;
+                    return "Saldo insuficiente.";
                 }
 
                 // Actualizar el saldo en la base de datos
@@ -92,11 +96,13 @@ public class OperacionesBD {
                     updateStatement.setInt(2, usuarioId);
                     updateStatement.executeUpdate();
                     System.out.println("Retiro realizado con éxito. Su nuevo saldo es: $" + (saldoActual - cantidad));
+                    return "Retiro realizado con éxito. Su nuevo saldo es: $" + (saldoActual - cantidad);
                 }
             } else {
                 System.out.println("No se encontró el usuario.");
             }
         }
+        return ":(";
     }
 
     public void cambiarPIN() throws SQLException {
