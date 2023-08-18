@@ -6,6 +6,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Scanner;
 
+import javax.swing.table.DefaultTableModel;
+
 public class OperacionesBD {
     private Connection connection;
     private int usuarioId;
@@ -105,62 +107,56 @@ public class OperacionesBD {
         return ":(";
     }
 
-    public void cambiarPIN() throws SQLException {
-        System.out.print("Ingrese su PIN actual: ");
-        int pinIngresado = scanner.nextInt();
-    
+    public String cambiarPIN(String pinIngresado, String nuevoPin, String confirmacionPin) throws SQLException {
         // Verificar si el PIN ingresado es correcto y obtener el ID del usuario
         String query = "SELECT id FROM usuarios WHERE id = ? AND pin = ?";
         try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
             preparedStatement.setInt(1, usuarioId);
-            preparedStatement.setInt(2, pinIngresado);
+            preparedStatement.setInt(2, Integer.parseInt(pinIngresado));
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                // El PIN es correcto, proceder a cambiarlo
-                System.out.print("Ingrese su nuevo PIN: ");
-                int nuevoPin = scanner.nextInt();
-                System.out.print("Confirme su nuevo PIN: ");
-                int confirmacionPin = scanner.nextInt();
-    
-                if (nuevoPin == confirmacionPin) {
+                // El PIN es correcto, proceder a cambiarlo  
+                if (Integer.parseInt(nuevoPin) == Integer.parseInt(confirmacionPin) ) {
                     // Actualizar el PIN en la base de datos
                     String updateQuery = "UPDATE usuarios SET pin = ? WHERE id = ?";
                     try (PreparedStatement updateStatement = connection.prepareStatement(updateQuery)) {
-                        updateStatement.setInt(1, nuevoPin);
+                        updateStatement.setInt(1, Integer.parseInt(nuevoPin));
                         updateStatement.setInt(2, usuarioId);
                         int rowsAffected = updateStatement.executeUpdate();
                         if (rowsAffected > 0) {
-                            System.out.println("PIN actualizado con éxito.");
+                            return "PIN actualizado con éxito.";
                         } else {
-                            System.out.println("No se pudo actualizar el PIN.");
+                            return "No se pudo actualizar el PIN.";
                         }
                     }
                 } else {
-                    System.out.println("Los PINs no coinciden.");
+                    return "Los PINs no coinciden.";
                 }
             } else {
-                System.out.println("PIN incorrecto.");
+                return "PIN incorrecto.";
             }
         }
     }
 
-    public void verhistorial() throws SQLException {
-        String query = "SELECT tipo_operacion, cantidad, fecha FROM historico WHERE usuario_id = ?";
-        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-            preparedStatement.setInt(1, usuarioId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            System.out.println("TIPO_OPERACION        CANTIDAD            FECHA");
-            while (resultSet.next()) {
-                String tipo_operacion = resultSet.getString("tipo_operacion");
-                double cantidad = resultSet.getDouble("cantidad");
-                String fecha = resultSet.getString("fecha");
-    
-                String formattedTipoOperacion = String.format("%-22s", tipo_operacion);
-                String formattedCantidad = String.format("%-20s", "$" + cantidad);
-                System.out.println(formattedTipoOperacion + formattedCantidad + fecha);
-            }
-        }catch (SQLException e) {
-            System.out.println("Error al obtener el historial: " + e.getMessage());
+    public void verhistorial(DefaultTableModel tableModel) throws SQLException {
+    String query = "SELECT tipo_operacion, cantidad, fecha FROM historico WHERE usuario_id = ?";
+    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+        preparedStatement.setInt(1, usuarioId);
+        ResultSet resultSet = preparedStatement.executeQuery();
+        
+        while (resultSet.next()) {
+            String tipo_operacion = resultSet.getString("tipo_operacion");
+            double cantidad = resultSet.getDouble("cantidad");
+            String fecha = resultSet.getString("fecha");
+
+            String formattedTipoOperacion = tipo_operacion;
+            String formattedCantidad = "$" + cantidad;
+
+            tableModel.addRow(new Object[]{formattedTipoOperacion, formattedCantidad, fecha});
         }
+    } catch (SQLException e) {
+        System.out.println("Error al obtener el historial: " + e.getMessage());
     }
+}
+
 }

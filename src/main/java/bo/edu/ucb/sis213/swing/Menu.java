@@ -75,7 +75,7 @@ public class Menu {
         btnCambiarPIN.setBackground(Color.BLACK);
         btnCambiarPIN.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para cambiar PIN
+                mostrarCambioPIN(connection, usuarioId);
             }
         });
         btnCambiarPIN.setBounds(267, 150, 170, 23);
@@ -87,7 +87,7 @@ public class Menu {
         btnVerHistorial.setBackground(Color.BLACK);
         btnVerHistorial.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                // Lógica para ver historial de transacciones
+                mostrarHistorialTransacciones(connection, usuarioId);
             }
         });
         btnVerHistorial.setBounds(87, 196, 170, 23);
@@ -129,6 +129,22 @@ public class Menu {
         RealizarRetiro retiro = new RealizarRetiro(frame, connection,usuarioId);
         frame.getContentPane().removeAll();
         frame.getContentPane().add(retiro.panelRealizarRetiro());
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void mostrarCambioPIN(Connection connection, int usuarioId) {
+        CambioPIN cambiopin = new CambioPIN(frame, connection,usuarioId);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(cambiopin.panelCambioPIN());
+        frame.revalidate();
+        frame.repaint();
+    }
+
+    private void mostrarHistorialTransacciones(Connection connection, int usuarioId) {
+        HistorialTransacciones historial = new HistorialTransacciones(frame, connection,usuarioId);
+        frame.getContentPane().removeAll();
+        frame.getContentPane().add(historial.panelHistorialTransacciones());
         frame.revalidate();
         frame.repaint();
     }

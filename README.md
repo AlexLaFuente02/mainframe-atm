@@ -1,108 +1,105 @@
-# Ejemplo de Cajero Automático como si fuera Mainframe.
+# 💰 Ejemplo de Cajero Automático Estilo Mainframe 💰
+
+
+## Evolución Adicional 📜
+
+Posteriormente, este emocionante viaje al pasado financiero evolucionó hacia un modelo cliente-servidor utilizando la elegancia moderna de Swing. ¡Descubre cómo la nostalgia y la innovación se unen para crear una experiencia única! 🕹️📻📠
+
+**Link de Balsamiq**:
+    * https://balsamiq.cloud/sd9sfap/pe2c3l0
 
 ## Funcionalidad
 
 **Práctica de Línea de Comandos: Simulación de un Cajero Automático**
 
 **Objetivo:**  
-Desarrollar un programa interactivo en línea de comandos que simule las operaciones básicas de un cajero automático.
+Sumérgete en un viaje nostálgico al pasado con un programa de línea de comandos que simula un cajero automático al estilo de los mainframes.
 
 **Instrucciones:**
 
-1. **Inicialización del Programa**:
-    * Al iniciar el programa, se debe solicitar al usuario que ingrese un PIN (Número de Identificación Personal) de 4 dígitos.
-    * Si el PIN es incorrecto después de 3 intentos, el programa debe cerrarse con un mensaje de error.
-    * Si el PIN es correcto, el usuario puede acceder al menú principal.
+1. **Iniciando el Programa 🚀**:
+    * Al dar inicio al programa, se te pedirá ingresar un PIN y alias.
+    * Si el PIN es incorrecto después de 3 intentos, el programa se cerrará con un mensaje de error.
+    * Si el PIN es correcto, ¡desbloquearás el acceso al majestuoso menú principal!
 
-2. **Menú Principal**:
-    * El menú principal debe ofrecer las siguientes opciones:
-        1. Consultar saldo.
-        2. Realizar un depósito.
-        3. Realizar un retiro.
-        4. Cambiar PIN.
-        5. Salir.
+2. **Menú Principal 📟**:
+    * Imagina que estás en la terminal de un mainframe clásico, aquí tienes tus opciones:
+        1. Consultar el tesoro 💰
+        2. Hacer un depósito 💸
+        3. Retirar fondos 💳
+        4. Cambiar el código secreto 🔐
+        5. Historial de Transacciones 💸
+        6. Decir adiós 👋
 
-3. **Consultar Saldo**:
-    * Mostrar el saldo actual del usuario.
+3. **Consultar el Tesoro 📊**:
+    * Las cifras aparecerán en la pantalla revelando tu saldo actual.
 
-4. **Realizar un Depósito**:
-    * Solicitar al usuario que ingrese la cantidad que desea depositar.
-    * Validar que la cantidad sea positiva.
-    * Añadir la cantidad al saldo actual.
-    * Mostrar un mensaje de confirmación.
+4. **Hacer un Depósito 📥**:
+    * Observa cómo en la pantalla emerge un arte ASCII pidiéndote que ingreses la cantidad a depositar.
+    * Una vez confirmado, tu saldo se actualizará y recibirás un "recibo" en el estilo de los viejos tiempos.
 
-5. **Realizar un Retiro**:
-    * Solicitar al usuario que ingrese la cantidad que desea retirar.
-    * Validar que la cantidad sea positiva y que no exceda el saldo actual.
-    * Restar la cantidad del saldo actual.
-    * Mostrar un mensaje de confirmación.
+5. **Retirar Fondos 📤**:
+    * Imagina que ves engranajes girando mientras introduces la cantidad que deseas retirar.
+    * Luego de validar, los engranajes dan una vuelta completa y recibirás un "recibo" con la cantidad retirada.
 
-6. **Cambiar PIN**:
-    * Solicitar al usuario que ingrese su PIN actual.
-    * Si el PIN ingresado es correcto, pedir que ingrese el nuevo PIN.
-    * Solicitar que confirme el nuevo PIN ingresándolo nuevamente.
-    * Si ambos PINs coinciden, actualizar el PIN.
+6. **Cambiar el Código Secreto 🔑**:
+    * Las luces destellantes en la consola indican que es hora de cambiar tu PIN.
+    * Si logras ingresar tu PIN actual, podrás crear un nuevo código después de resolver "desafíos criptográficos".
 
-7. **Salir**:
-    * Mostrar un mensaje de despedida y cerrar el programa.
+7. **Ver tu récord de riquezas 💸**:
+    * Tendrás acceso a ver todos los movimientos que hayas realizado en tu cuenta y sus respectivos montos.
 
+8. **Decir Adiós 🏁**:
+    * La pantalla te muestra un mensaje de despedida digno de las películas clásicas de ciencia ficción antes de cerrar el programa.
 
+## Requisitos 🛠️
 
-## Requerimientos
+Asegúrate de tener instalado:
 
-Para correr este proyecto debe tener instalado:
+ - Java 11 📦
+ - Maven 3.8.4 📦
+ - MySQL 8.1.0 📦
 
- - Java 11
- - Maven 3.8.4
- - MySQL 8.1.0
+Se recomienda usar `sdkman` en sistemas Linux para facilitar la instalación.
 
-Se recomienda utilizar sdkman (Linux)
+## Compilación 🛠️
 
-## Compilación
-
-Para compilar el proyecto
+Para compilar el proyecto:
 
 ```
 mvn clean install
 ```
 
-## Ejecución
+## Ejecución 🚀
 
 ```
-mvn exec:java -Dexec.mainClass="bo.edu.ucb.sis213.App"
+mvn exec:java -Dexec.mainClass="bo.edu.ucb.sis213.swing.ATMApp"
 ```
 
+## Instalación de la Base de Datos 💾
 
-## Instalación de la Base de Datos
-
-1. Hacer correr una instancia MySQL en docker
+1. Inicia una instancia de MySQL en Docker:
 
 ```
 docker run --name mysql-atmalf -e MYSQL_ROOT_PASSWORD=123456 -p 3307:3306 -d mysql:8
 ```
 
-_1.1 Inicicar una instancia ya creada
-
-```
-docker start mysql-atmalf
-```
-
-2. Me conecto a la BBDD (Le pedira password es 123456)
+2. Conéctate a la base de datos:
 
 ```
 docker exec -it mysql-atmalf mysql -u root -p
 ```
 
-3. Creamos la Base de Datos del ATM.
+3. Crea la base de datos:
 
 ```
 CREATE DATABASE atm;
 ```
 
-4. Creamos la Base de Datos del ATM.
+4. Usa la base de datos:
 
 ```
-use atm;
+USE atm;
 ```
 
-5. Ejecutan el script init.sql de la carpeta database.
+5. Ejecuta el script `init.sql` de la carpeta `database`.

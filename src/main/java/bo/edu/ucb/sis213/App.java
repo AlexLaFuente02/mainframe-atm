@@ -62,10 +62,10 @@ public class App {
                     //operacionesBD.realizarRetiro();
                     break;
                 case 4:
-                    operacionesBD.cambiarPIN();
+                    //operacionesBD.cambiarPIN();
                     break;
                 case 5:
-                    operacionesBD.verhistorial();
+                    //operacionesBD.verhistorial();
                     break;
                 case 6:
                     System.out.println("Gracias por usar el cajero. ¡Hasta luego!");
