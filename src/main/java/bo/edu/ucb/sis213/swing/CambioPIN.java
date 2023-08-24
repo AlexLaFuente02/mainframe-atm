@@ -3,19 +3,19 @@ package bo.edu.ucb.sis213.swing;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import bo.edu.ucb.sis213.DatabaseManager;
-import bo.edu.ucb.sis213.OperacionesBD;
+import bo.edu.ucb.sis213.Logic.Logica;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class CambioPIN {
 
     private JFrame frame;
     private Connection connection;
     private int usuarioId;
+
+	private Logica logica = new Logica();
 
     public CambioPIN(JFrame frame, Connection connection, int usuarioId) {
         this.frame = frame;
@@ -76,11 +76,7 @@ public class CambioPIN {
 				String pinactual = pinActual.getText();
 				String pinnuevo = pinField.getText();
 				String pinconfirmacion = pinConfir.getText();
-				try {
-					cambiarPIN(pinactual, pinnuevo, pinconfirmacion);
-				} catch (SQLException e1) {
-					e1.printStackTrace();
-				}
+				mostrarMensaje(logica.cambiarPINLogica(pinactual, pinnuevo, pinconfirmacion, connection, usuarioId));
 			}
 		});
 		btnIniciarSesion.setBounds(269, 211, 135, 23);
@@ -89,7 +85,8 @@ public class CambioPIN {
 		JButton btnCerrar = new JButton("Volver al menú");
 		btnCerrar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-                mostrarMenu(connection, usuarioId);
+                rutas rutas = new rutas(frame, connection, usuarioId);
+				rutas.mostrarMenu();
 			}
 		});
 		btnCerrar.setForeground(Color.WHITE);
@@ -99,20 +96,6 @@ public class CambioPIN {
 		contentPane.add(btnCerrar);
 		
         return contentPane; 
-    }
-
-	private void cambiarPIN(String pinactual,String pinnuevo,String pinconfirmacion) throws SQLException {
-        OperacionesBD op = new OperacionesBD(connection, usuarioId);
-		mostrarMensaje(op.cambiarPIN(pinactual, pinnuevo, pinconfirmacion));
-		
-    }
-
-	private void mostrarMenu(Connection connection, int usuarioId) {
-        Menu menu = new Menu(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(menu.panelMenu());
-        frame.revalidate();
-        frame.repaint();
     }
 
 	private void mostrarMensaje(String mensaje) {

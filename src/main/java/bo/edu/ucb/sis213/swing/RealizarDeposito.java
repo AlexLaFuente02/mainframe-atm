@@ -3,18 +3,19 @@ package bo.edu.ucb.sis213.swing;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import bo.edu.ucb.sis213.OperacionesBD;
+import bo.edu.ucb.sis213.Logic.Logica;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class RealizarDeposito {
 
     private JFrame frame;
     private Connection connection;
     private int usuarioId;
+
+	private Logica logica = new Logica();
 
     public RealizarDeposito(JFrame frame, Connection connection, int usuarioId) {
         this.frame = frame;
@@ -50,7 +51,8 @@ public class RealizarDeposito {
 		JButton btnVolverMenu = new JButton("Volver al Menú");
 		btnVolverMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mostrarMenu(connection, usuarioId);
+				rutas rutas = new rutas(frame, connection, usuarioId);
+				rutas.mostrarMenu();
 			}
 		});
 		btnVolverMenu.setForeground(Color.WHITE);
@@ -73,7 +75,8 @@ public class RealizarDeposito {
 		btnDepositar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String montoIntroducido = montoField.getText();
-				txtArea.setText(msgTxtArea(montoIntroducido));
+				//Obtenemos texto de Logica
+				txtArea.setText(logica.depositoLogica(montoIntroducido, connection, usuarioId));
 			}
 		});
 		btnDepositar.setForeground(Color.WHITE);
@@ -84,26 +87,5 @@ public class RealizarDeposito {
 
         return contentPane;
     }
-
-
-	private void mostrarMenu(Connection connection, int usuarioId) {
-        Menu menu = new Menu(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(menu.panelMenu());
-        frame.revalidate();
-        frame.repaint();
-    }
-
-	
-	private String msgTxtArea(String montoIntroducido){
-		OperacionesBD op = new OperacionesBD(connection, usuarioId);
-        String txtShow=""; 
-        try {
-            txtShow=op.realizarDeposito(montoIntroducido);
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
-		return txtShow;
-	}
 
 }

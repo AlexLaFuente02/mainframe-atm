@@ -39,7 +39,8 @@ public class Menu {
         btnConsultarSaldo.setBackground(Color.BLACK);
         btnConsultarSaldo.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostrarSaldo(connection, usuarioId);
+                rutas rutas = new rutas(frame, connection, usuarioId);
+                rutas.mostrarSaldo();
             }
         });
         btnConsultarSaldo.setBounds(87, 107, 170, 23);
@@ -51,7 +52,8 @@ public class Menu {
         btnRealizarDeposito.setBackground(Color.BLACK);
         btnRealizarDeposito.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostrarDeposito(connection, usuarioId);
+                rutas rutas = new rutas(frame, connection, usuarioId);
+                rutas.mostrarDeposito();
             }
         });
         btnRealizarDeposito.setBounds(267, 107, 170, 23);
@@ -63,7 +65,8 @@ public class Menu {
         btnRealizarRetiro.setBackground(Color.BLACK);
         btnRealizarRetiro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostrarRetiro(connection, usuarioId);
+                rutas rutas = new rutas(frame, connection, usuarioId);
+                rutas.mostrarRetiro();
             }
         });
         btnRealizarRetiro.setBounds(87, 150, 170, 23);
@@ -75,7 +78,8 @@ public class Menu {
         btnCambiarPIN.setBackground(Color.BLACK);
         btnCambiarPIN.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostrarCambioPIN(connection, usuarioId);
+                rutas rutas = new rutas(frame, connection, usuarioId);
+                rutas.mostrarCambioPIN();
             }
         });
         btnCambiarPIN.setBounds(267, 150, 170, 23);
@@ -87,7 +91,8 @@ public class Menu {
         btnVerHistorial.setBackground(Color.BLACK);
         btnVerHistorial.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                mostrarHistorialTransacciones(connection, usuarioId);
+                rutas rutas = new rutas(frame, connection, usuarioId);
+                rutas.mostrarHistorialTransacciones();
             }
         });
         btnVerHistorial.setBounds(87, 196, 170, 23);
@@ -106,47 +111,6 @@ public class Menu {
         menuPanel.add(btnSalir);
 
         return menuPanel;
-    }
-
-
-    private void mostrarSaldo(Connection connection, int usuarioId) {
-        ConsultarSaldo saldo = new ConsultarSaldo(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(saldo.panelSaldo());
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    private void mostrarDeposito(Connection connection, int usuarioId) {
-        RealizarDeposito deposito = new RealizarDeposito(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(deposito.panelRealizarDeposito());
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    private void mostrarRetiro(Connection connection, int usuarioId) {
-        RealizarRetiro retiro = new RealizarRetiro(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(retiro.panelRealizarRetiro());
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    private void mostrarCambioPIN(Connection connection, int usuarioId) {
-        CambioPIN cambiopin = new CambioPIN(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(cambiopin.panelCambioPIN());
-        frame.revalidate();
-        frame.repaint();
-    }
-
-    private void mostrarHistorialTransacciones(Connection connection, int usuarioId) {
-        HistorialTransacciones historial = new HistorialTransacciones(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(historial.panelHistorialTransacciones());
-        frame.revalidate();
-        frame.repaint();
     }
 
 }

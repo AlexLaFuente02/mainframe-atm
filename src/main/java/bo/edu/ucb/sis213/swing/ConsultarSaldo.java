@@ -2,19 +2,19 @@ package bo.edu.ucb.sis213.swing;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-
-import bo.edu.ucb.sis213.OperacionesBD;
+import bo.edu.ucb.sis213.Logic.Logica;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class ConsultarSaldo {
 
     private JFrame frame;
     private Connection connection;
     private int usuarioId;
+	
+	private Logica logica = new Logica();
 
     public ConsultarSaldo(JFrame frame, Connection connection, int usuarioId) {
         this.frame = frame;
@@ -22,7 +22,7 @@ public class ConsultarSaldo {
         this.usuarioId = usuarioId;
     }
 
-    public JPanel panelSaldo() {
+    public JPanel panelSaldo(){
         JPanel contentPane = new JPanel();
         contentPane = new JPanel();
 		contentPane.setBackground(new Color(128, 128, 128));
@@ -40,7 +40,8 @@ public class ConsultarSaldo {
 		JButton btnVolverMenu = new JButton("Volver al Menú");
 		btnVolverMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mostrarMenu(connection, usuarioId);
+				rutas rutas = new rutas(frame, connection, usuarioId);
+				rutas.mostrarMenu();
 			}
 		});
 		btnVolverMenu.setForeground(Color.WHITE);
@@ -56,27 +57,12 @@ public class ConsultarSaldo {
 		txtArea.setEditable(false);
 		txtArea.setForeground(Color.BLACK);
 		txtArea.setLineWrap(true);
-        OperacionesBD op = new OperacionesBD(connection, usuarioId);
-        String txtShow="";
-        try {
-            txtShow=op.consultarSaldo();
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-        }
-
-		txtArea.setText(txtShow);
+		//Agregamos el texto obtenido de la logica
+		txtArea.setText(logica.consultarSaldo(connection, usuarioId));
 		txtArea.setBounds(138, 95, 215, 90);
 		contentPane.add(txtArea);
 
         return contentPane;
-    }
-
-	private void mostrarMenu(Connection connection, int usuarioId) {
-        Menu menu = new Menu(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(menu.panelMenu());
-        frame.revalidate();
-        frame.repaint();
     }
 
 }

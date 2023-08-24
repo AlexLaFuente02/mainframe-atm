@@ -3,11 +3,10 @@ package bo.edu.ucb.sis213.swing;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import bo.edu.ucb.sis213.DatabaseManager;
+import bo.edu.ucb.sis213.Logic.Logica;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.sql.Connection;
 import java.sql.SQLException;
 
 public class InicioSesion {
@@ -16,8 +15,7 @@ public class InicioSesion {
     private JPanel loginPanel;
 	private JTextField aliasField;
 	private JPasswordField pinField;
-
-	private int intentos = 3;
+	private Logica logica = new Logica();
 
     public InicioSesion(JFrame frame) {
         this.frame = frame;
@@ -63,7 +61,12 @@ public class InicioSesion {
 		btnIniciarSesion.setBackground(Color.BLACK);
 		btnIniciarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				verificarPIN();
+				try {
+					LogicSignIn();
+				} 
+				catch (SQLException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		btnIniciarSesion.setBounds(269, 200, 105, 23);
@@ -84,49 +87,29 @@ public class InicioSesion {
         return loginPanel; 
     }
 
-	private void verificarPIN() {
-        if (intentos > 0) { // Verificar si quedan intentos
-            int pinIngresado = Integer.parseInt(new String(pinField.getPassword())); // Obtener el PIN ingresado
-            String aliasIngresado = aliasField.getText();
-			try {
-                Connection connection = DatabaseManager.getConnection();
-                int usuarioId = DatabaseManager.obtenerUsuarioIdPorPinYAlias(connection, aliasIngresado, pinIngresado);
-                if (usuarioId != -1) {
-                    mostrarMenu(connection,usuarioId);
-                } 
-				else {
-                    intentos--;
-                    if (intentos > 0) {
-                        mostrarMensajeError("PIN incorrecto. Le quedan " + intentos + " intentos.");
-                    } 
-					else {
-                        mostrarMensajeError("PIN incorrecto. Ha excedido el número de intentos.");
-                        System.exit(0);
-                    }
-                }
-            } 
-			catch (SQLException ex) {
-                mostrarMensajeError("Error al conectar a la base de datos: " + ex.getMessage());
-            }
-        } 
+	// Uso de logica
+	private void LogicSignIn() throws SQLException {
+        String alias = aliasField.getText();
+        int pin = Integer.parseInt(new String(pinField.getPassword()));
+        if (logica.verificarPIN(alias, pin)) {
+			System.out.println("Workiiin");
+            rutas rutas = new rutas(frame,logica.obtenerConexion(), logica.obtenerUsuarioIdPorPinYAlias(logica.obtenerConexion(), alias, pin));
+			rutas.mostrarMenu();        
+		} 
 		else {
-            mostrarMensajeError("Ha excedido el número de intentos.");
-            System.exit(0);
+    	    int intentosRestantes = logica.getIntentosRestantes();
+            if (intentosRestantes > 0) {
+                mostrarMensajeError("PIN incorrecto. Le quedan " + intentosRestantes + " intentos.");
+            } 
+			else {
+                mostrarMensajeError("PIN incorrecto. Ha excedido el número de intentos.");
+                System.exit(0);
+            }
         }
-    }
-
-	private void mostrarMenu(Connection connection, int usuarioId) {
-        Menu menu = new Menu(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(menu.panelMenu());
-        frame.revalidate();
-        frame.repaint();
     }
 
 	private void mostrarMensajeError(String mensaje) {
         JOptionPane.showMessageDialog(frame, mensaje, "Error de Inicio de Sesión", JOptionPane.ERROR_MESSAGE);
     }
 
-
-	
 }

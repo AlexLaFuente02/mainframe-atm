@@ -1,22 +1,17 @@
-package bo.edu.ucb.sis213;
+package bo.edu.ucb.sis213.BD;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Scanner;
-
-import javax.swing.table.DefaultTableModel;
 
 public class OperacionesBD {
     private Connection connection;
     private int usuarioId;
-    private Scanner scanner;
 
     public OperacionesBD(Connection connection, int usuarioId) {
         this.connection = connection;
         this.usuarioId = usuarioId;
-        this.scanner = new Scanner(System.in);
     }
 
     public String consultarSaldo() throws SQLException {
@@ -138,25 +133,17 @@ public class OperacionesBD {
         }
     }
 
-    public void verhistorial(DefaultTableModel tableModel) throws SQLException {
-    String query = "SELECT tipo_operacion, cantidad, fecha FROM historico WHERE usuario_id = ?";
-    try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-        preparedStatement.setInt(1, usuarioId);
-        ResultSet resultSet = preparedStatement.executeQuery();
-        
-        while (resultSet.next()) {
-            String tipo_operacion = resultSet.getString("tipo_operacion");
-            double cantidad = resultSet.getDouble("cantidad");
-            String fecha = resultSet.getString("fecha");
-
-            String formattedTipoOperacion = tipo_operacion;
-            String formattedCantidad = "$" + cantidad;
-
-            tableModel.addRow(new Object[]{formattedTipoOperacion, formattedCantidad, fecha});
+    public ResultSet verhistorial() {
+        String query = "SELECT tipo_operacion, cantidad, fecha FROM historico WHERE usuario_id = ?";
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, usuarioId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+            return resultSet;
+        } catch (SQLException e) {
+            System.out.println("Error al obtener el historial: " + e.getMessage());
         }
-    } catch (SQLException e) {
-        System.out.println("Error al obtener el historial: " + e.getMessage());
+        return null;
     }
-}
 
 }

@@ -4,18 +4,21 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import bo.edu.ucb.sis213.OperacionesBD;
+import bo.edu.ucb.sis213.Logic.Logica;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class HistorialTransacciones {
 
     private JFrame frame;
     private Connection connection;
     private int usuarioId;
+
+    private Logica logica = new Logica();
 
     public HistorialTransacciones(JFrame frame, Connection connection, int usuarioId) {
         this.frame = frame;
@@ -35,13 +38,14 @@ public class HistorialTransacciones {
 		txtTitulo.setForeground(Color.BLACK);
 		txtTitulo.setText("Historial de Transacciones");
 		txtTitulo.setFont(new Font("Verdana", Font.BOLD, 25));
-		txtTitulo.setBounds(124, 32, 285, 40);
+		txtTitulo.setBounds(84, 32, 370, 40);
 		contentPane.add(txtTitulo);
 		
 		JButton btnVolverMenu = new JButton("Volver al Menú");
 		btnVolverMenu.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				mostrarMenu(connection, usuarioId);
+				rutas rutas = new rutas(frame, connection, usuarioId);
+                rutas.mostrarMenu();
 			}
 		});
 		btnVolverMenu.setForeground(Color.WHITE);
@@ -64,27 +68,17 @@ public class HistorialTransacciones {
         table.setModel(tableModel);
         scrollPane_1.setViewportView(table);
 
+
         try {
-            cargarHistorial(tableModel);
+            ArrayList<String[]> historialData = logica.cargarHistorial(connection, usuarioId);
+            for (String[] row : historialData) {
+                tableModel.addRow(row);
+            }
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
 
-		
         return contentPane;
-    }
-
-	private void cargarHistorial(DefaultTableModel tableModel) throws SQLException {
-        OperacionesBD op = new OperacionesBD(connection, usuarioId);
-		op.verhistorial(tableModel);
-    }
-
-	private void mostrarMenu(Connection connection, int usuarioId) {
-        Menu menu = new Menu(frame, connection,usuarioId);
-        frame.getContentPane().removeAll();
-        frame.getContentPane().add(menu.panelMenu());
-        frame.revalidate();
-        frame.repaint();
     }
 
 }
